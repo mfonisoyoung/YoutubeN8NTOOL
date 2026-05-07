@@ -1,0 +1,572 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Content Idea Form",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "First Name"
+            },
+            {
+              "fieldLabel": "Last Name"
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Subject"
+            },
+            {
+              "fieldLabel": "Topic",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "wordpress"
+                  },
+                  {
+                    "option": "Ecommerce"
+                  },
+                  {
+                    "option": "SEO"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Description of Idea",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {
+          "respondWithOptions": {
+            "values": {
+              "formSubmittedText": "Thanks for Submitting your idea. please check your email for follow up text. "
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "50bdb1b4-aa54-4df1-9778-fe7a9a863eb4",
+      "name": "On form submission",
+      "webhookId": "a4654a9e-3964-4cf9-b0a5-69ee9db2422c"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1NalL1jxwI72hKaxE3j2zWFVCRdjD5e7enhZnrQqSW1w",
+          "mode": "list",
+          "cachedResultName": "Content Ideas Submission",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NalL1jxwI72hKaxE3j2zWFVCRdjD5e7enhZnrQqSW1w/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NalL1jxwI72hKaxE3j2zWFVCRdjD5e7enhZnrQqSW1w/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "First Name": "={{ $json['First Name'] }}",
+            "Last Name": "={{ $json['Last Name'] }}",
+            "Email": "={{ $json.Email }}",
+            "Subject": "={{ $json.Subject }}",
+            "Topic ": "={{ $json.Topic }}",
+            "Description of Idea": "={{ $json['Description of Idea'] }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Topic ",
+              "displayName": "Topic ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Description of Idea",
+              "displayName": "Description of Idea",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "8a6e96ae-82f1-437a-ace5-e51cff6823a7",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1jUo0SmF0cN5OECP",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a0cc78a3-baaa-45d5-babb-483179e64e87",
+              "leftValue": "={{ $json['Topic '] }}",
+              "rightValue": "SEO",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        0
+      ],
+      "id": "7f0295e2-74ca-42da-a4d3-9f9dcaa1d14f",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Topic '] }}",
+                    "rightValue": "wordpress",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "488e9ba8-459d-4924-b008-05761d31218d"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "630a17d1-e4fe-491f-884d-7fe50c0a1c36",
+                    "leftValue": "={{ $json['Topic '] }}",
+                    "rightValue": "Ecommerce",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        0
+      ],
+      "id": "4f632707-c757-43b0-b22c-b545f5bcaff0",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "block",
+        "blockId": {
+          "__rl": true,
+          "value": "https://www.notion.so/Content-ideas-form-submission-2ffe56bf3ddc80cbb395f98f083a10f8",
+          "mode": "url"
+        },
+        "blockUi": {
+          "blockValues": [
+            {
+              "textContent": "={{ $json['Last Name'] }} {{ $json['First Name'] }} "
+            },
+            {
+              "textContent": "={{ $json.Email }}"
+            },
+            {
+              "type": "heading_3",
+              "textContent": "={{ $json.Subject }}"
+            },
+            {
+              "type": "heading_3"
+            },
+            {
+              "textContent": "={{ $json['Description of Idea'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        -96
+      ],
+      "id": "21df961e-11e4-41c8-9227-b83fab62f083",
+      "name": "Append a block",
+      "credentials": {
+        "notionApi": {
+          "id": "7h8oX1QHLm7mfnzM",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "block",
+        "blockId": {
+          "__rl": true,
+          "value": "https://www.notion.so/Content-ideas-form-submission-2ffe56bf3ddc80cbb395f98f083a10f8",
+          "mode": "url"
+        },
+        "blockUi": {
+          "blockValues": [
+            {
+              "textContent": "={{ $json['First Name'] }} {{ $json['Last Name'] }}"
+            },
+            {
+              "textContent": "={{ $json.Email }}"
+            },
+            {
+              "type": "heading_3",
+              "textContent": "={{ $json.Subject }}"
+            },
+            {
+              "textContent": "={{ $json['Topic '] }}"
+            },
+            {
+              "textContent": "={{ $json['Description of Idea'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        80
+      ],
+      "id": "93c63bd4-5bb2-40ca-bff4-d47e70551f49",
+      "name": "Append a block1",
+      "credentials": {
+        "notionApi": {
+          "id": "7h8oX1QHLm7mfnzM",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Switch').item.json.Email }}",
+        "subject": "Thanks for the message.",
+        "message": "Thanks for dropping your feedback. i will look into it and get back to it and get back to you Asap!!\nHere is a video you can check out. \nhttps://youtu.be/garxqMniQS8?si=VhivExaAuZ6k1RAJ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1104,
+        96
+      ],
+      "id": "2be4e69b-ddb4-4bb3-ace9-743aa6bfed62",
+      "name": "Send a message",
+      "webhookId": "0e0673d9-ea5d-41cc-98e1-8fb3a81213cf",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "SHIE83Of8iDFQO0K",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "mfonisotommy74@gmail.com",
+        "subject": "Hello world",
+        "message": "CHECK THIS OUT",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1104,
+        -96
+      ],
+      "id": "aba66e72-f196-45de-aa41-fe74cc74d9ee",
+      "name": "Send a message1",
+      "webhookId": "ea2a44fc-a830-4168-92df-3cb9a7c8c84d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "HYLhZ82tIpLvK11H",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1328,
+        0
+      ],
+      "id": "85f14b87-a126-4fb0-bac1-3f37774275f7",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "sendTo": "mfonisoyoung@gmail.com",
+        "subject": "New Video Idea Submission",
+        "message": "Your new idea for a video is here",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1536,
+        0
+      ],
+      "id": "b5edfdc2-1b67-4141-b72f-562a9387ccb3",
+      "name": "Send a message2",
+      "webhookId": "902ef9a0-4aa7-44b8-ac96-d616cd5cca32",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "HYLhZ82tIpLvK11H",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "First Name": "unyie",
+          "Last Name": "Emmanuel",
+          "Email": "girlfonis@gmail.com",
+          "Subject": "I would love to learn about ecommerce",
+          "Topic": "Ecommerce",
+          "Description of Idea": "Can I get a good YouTube video for ecommerce?",
+          "submittedAt": "2026-05-07T18:10:33.696+01:00",
+          "formMode": "test"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Append a block",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append a block1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append a block1": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append a block": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "de3f91c7-515e-4360-b479-57be860bbc2e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ed36a9598f70d9cd925dca30415422660bb971918ea198d15fc65f5cf905a70a"
+  },
+  "id": "676wrvQjPMu6FHDy",
+  "tags": []
+}
